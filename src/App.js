@@ -1,48 +1,25 @@
-import React, { useState } from "react";
-import GameCanvas from "./components/GameCanvas";
+import './App.css';
+import PhaserComponent from './Phaser';
 
 function App() {
-  const [moveBallCallback, setMoveBallCallback] = useState(() => () => {});
-
-  const handleButtonClick = (direction) => {
-    if (moveBallCallback) {
-      moveBallCallback(direction);
-    }
+  const handleButtonClick = (position) => {
+    window.dispatchEvent(new CustomEvent('moveBall', { detail: position }));
   };
 
   return (
-    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", height: "100vh" }}>
-      <h1 style={{ textAlign: "center" }}>Bouncing Ball Game</h1>
-      <div style={{ position: "relative", width: "600px", height: "600px" }}>
-        {/* Phaser canvas in the center */}
-        <div style={{ position: "absolute", top: "25%", left: "25%" }}>
-          <GameCanvas setMoveBallCallback={setMoveBallCallback} />
+    <div className="App">
+      <div className="grid">
+        <button onClick={() => handleButtonClick('top-left')}>Top Left</button>
+        <button onClick={() => handleButtonClick('top')}>Top</button>
+        <button onClick={() => handleButtonClick('top-right')}>Top Right</button>
+        <button onClick={() => handleButtonClick('left')}>Left</button>
+        <div className="phaser-container">
+          <PhaserComponent />
         </div>
-        {/* Buttons */}
-        <button style={{ position: "absolute", top: "-20px", left: "50%", transform: "translateX(-50%)" }} onClick={() => handleButtonClick("top")}>
-          Button 1
-        </button>
-        <button style={{ position: "absolute", top: "10%", left: "90%" }} onClick={() => handleButtonClick("top-right")}>
-          Button 2
-        </button>
-        <button style={{ position: "absolute", top: "50%", left: "90%", transform: "translateY(-50%)" }} onClick={() => handleButtonClick("right")}>
-          Button 3
-        </button>
-        <button style={{ position: "absolute", bottom: "10%", left: "90%" }} onClick={() => handleButtonClick("bottom-right")}>
-          Button 4
-        </button>
-        <button style={{ position: "absolute", bottom: "-20px", left: "50%", transform: "translateX(-50%)" }} onClick={() => handleButtonClick("bottom")}>
-          Button 5
-        </button>
-        <button style={{ position: "absolute", bottom: "10%", left: "-20px" }} onClick={() => handleButtonClick("bottom-left")}>
-          Button 6
-        </button>
-        <button style={{ position: "absolute", top: "50%", left: "-20px", transform: "translateY(-50%)" }} onClick={() => handleButtonClick("left")}>
-          Button 7
-        </button>
-        <button style={{ position: "absolute", top: "10%", left: "-20px" }} onClick={() => handleButtonClick("top-left")}>
-          Button 8
-        </button>
+        <button onClick={() => handleButtonClick('right')}>Right</button>
+        <button onClick={() => handleButtonClick('bottom-left')}>Bottom Left</button>
+        <button onClick={() => handleButtonClick('bottom')}>Bottom</button>
+        <button onClick={() => handleButtonClick('bottom-right')}>Bottom Right</button>
       </div>
     </div>
   );

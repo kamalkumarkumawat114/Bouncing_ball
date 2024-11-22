@@ -1,19 +1,44 @@
-button {
-  width: 80px;
-  height: 40px;
-  border-radius: 5px;
-  font-size: 14px;
+.App {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
   background-color: #f0f0f0;
-  border: 1px solid #ccc;
-  cursor: pointer;
 }
-button:hover {
-  background-color: #e0e0e0;
+
+.grid {
+  display: grid;
+  grid-template-areas:
+    "button1 button2 button3"
+    "button4 phaser button5"
+    "button6 button7 button8";
+  gap: 10px;
 }
-#phaser-container {
+
+.phaser-container {
+  grid-area: phaser;
   width: 300px;
   height: 300px;
-  background-color: black;
-  margin: 0 auto;
-  border: 3px solid #000;
+  border: 2px solid rgb(6, 0, 0);
+}
+
+button {
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #357cc8;
+}
+button:hover {
+  background-color: #1b334d;
+  transform: scale(1.05);
+}
+
+/* Active button style */
+button:active {
+  background-color: #203751;
+  transform: scale(1);
 }
