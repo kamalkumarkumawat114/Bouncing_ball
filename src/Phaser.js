@@ -19,7 +19,7 @@ export default class GameScene extends Phaser.Scene {
         this.ball.body.setFriction(0);
         
         // Set initial velocity
-        this.ball.body.setVelocity(400, 300);
+        this.ball.body.setVelocity(370, 300);
 
         // Define button positions
         this.buttonPositions = {
