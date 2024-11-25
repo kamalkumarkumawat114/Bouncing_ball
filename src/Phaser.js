@@ -7,7 +7,7 @@ export default class GameScene extends Phaser.Scene {
 
     create() {
         // Create a red ball (circle)
-        this.ball = this.add.circle(200, 200, 15, 0xFF0000);
+        this.ball = this.add.circle(150, 50, 15, 0xFF0000);
         
         // Enable physics on the ball
         this.physics.add.existing(this.ball);
@@ -19,7 +19,7 @@ export default class GameScene extends Phaser.Scene {
         this.ball.body.setFriction(0);
         
         // Set initial velocity
-        this.ball.body.setVelocity(300, 300);
+        this.ball.body.setVelocity(400, 300);
 
         // Define button positions
         this.buttonPositions = {
@@ -49,7 +49,7 @@ export default class GameScene extends Phaser.Scene {
 
         // Normalize the vector and apply speed
         const distance = Math.sqrt(dx * dx + dy * dy);
-        const speed = 300;
+        const speed = 400;
         
         const velocityX = (dx / distance) * speed;
         const velocityY = (dy / distance) * speed;
