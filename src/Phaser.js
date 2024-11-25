@@ -1,94 +1,60 @@
-import React, { useEffect, useRef } from 'react';
 import Phaser from 'phaser';
 
-const PhaserComponent = () => {
-  const phaserRef = useRef(null);
-
-  useEffect(() => {
-    const config = {
-      type: Phaser.AUTO,
-      parent: phaserRef.current,
-      width: 300,
-      height: 300,
-      backgroundColor: '#87CEEB',
-      physics: {
-        default: 'arcade',
-        arcade: {
-          gravity: { x: 0, y: 0 },
-          debug: false,
-        },
-      },
-      scene: {
-        preload: preload,
-        create: create,
-        update: update,
-      },
-    };
-
-    const game = new Phaser.Game(config);
-
-    let ball;
-
-    function preload() {
-      this.load.image('ball', 'assets/red_ball.png');
+export default class GameScene extends Phaser.Scene {
+    constructor() {
+        super({ key: 'GameScene' });
     }
 
-    function create() {
+    create() {
+        // Create a red ball (circle)
+        this.ball = this.add.circle(200, 200, 15, 0xFF0000);
         
-        ball = this.add.circle(150, 150, 15, 0xff0000); 
-        this.physics.add.existing(ball);
-      
+        // Enable physics on the ball
+        this.physics.add.existing(this.ball);
         
-        ball.body.setCollideWorldBounds(true);
-        ball.body.setBounce(1);
-        ball.body.setVelocity(100, 100);
-      
+        // Set ball properties
+        this.ball.body.setCollideWorldBounds(true);
+        this.ball.body.setBounce(1, 1);
+        this.ball.body.setDamping(false);
+        this.ball.body.setFriction(0);
         
-        window.addEventListener('moveBall', (event) => {
-          const { detail } = event;
-      
-         
-          switch (detail) {
-            case 'top-left':
-              ball.body.setVelocity(-150, -150);
-              break;
-            case 'top':
-              ball.body.setVelocity(0, -150);
-              break;
-            case 'top-right':
-              ball.body.setVelocity(150, -150);
-              break;
-            case 'left':
-              ball.body.setVelocity(-150, 0);
-              break;
-            case 'right':
-              ball.body.setVelocity(150, 0);
-              break;
-            case 'bottom-left':
-              ball.body.setVelocity(-150, 150);
-              break;
-            case 'bottom':
-              ball.body.setVelocity(0, 150);
-              break;
-            case 'bottom-right':
-              ball.body.setVelocity(150, 150);
-              break;
-            default:
-              break;
-          }
-        });
-      }
-      
-    function update() {
-      
+        // Set initial velocity
+        this.ball.body.setVelocity(300, 300);
+
+        // Define button positions
+        this.buttonPositions = {
+            topLeft: { x: 100, y: 0 },
+            topRight: { x: 300, y: 0 },
+            leftTop: { x: 0, y: 100 },
+            leftBottom: { x: 0, y: 300 },
+            rightTop: { x: 400, y: 100 },
+            rightBottom: { x: 400, y: 300 },
+            bottomLeft: { x: 100, y: 400 },
+            bottomRight: { x: 300, y: 400 }
+        };
     }
 
-    return () => {
-      game.destroy(true);
-    };
-  }, []);
+    bounceTowards(direction) {
+        // Get target button position
+        const targetPos = this.buttonPositions[direction];
+        if (!targetPos) return;
 
-  return <div ref={phaserRef}></div>;
-};
+        // Get current ball position
+        const currentX = this.ball.x;
+        const currentY = this.ball.y;
 
-export default PhaserComponent;
+        // Calculate direction vector
+        const dx = targetPos.x - currentX;
+        const dy = targetPos.y - currentY;
+
+        // Normalize the vector and apply speed
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        const speed = 300;
+        
+        const velocityX = (dx / distance) * speed;
+        const velocityY = (dy / distance) * speed;
+
+        // Apply velocity to the ball
+        this.ball.body.setVelocity(velocityX, velocityY);
+    }
+}
